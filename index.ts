@@ -51,6 +51,12 @@ exports.copy = async (context) => {
     let result = await gmtaobao.activity.copy(context)
     return result;
 };
+
+// @ts-ignore
+exports.newCopy = async (context) => {
+    let result = await gmtaobao.activity.newCopy(context)
+    return result;
+};
 //权益查询
 // @ts-ignore
 exports.queryBenefit = async (context) => {

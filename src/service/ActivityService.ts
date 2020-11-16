@@ -71,13 +71,4 @@ export default class ActivityService extends BaseActivityService {
         }
         return items;
     }
-
-    async copy() {
-        let target: any = await this.getActivity();
-        target = target.data;
-        delete target._id;
-        for (let configKey in target.config) {
-
-        }
-    }
 }
