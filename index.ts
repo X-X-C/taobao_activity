@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as gmtaobao from "gmtaobao"
+import * as gmtaobao from "gm-activity"
 import ActivityService from "./src/service/ActivityService";
 import App from "./base/App";
 
