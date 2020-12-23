@@ -69,7 +69,7 @@ exports.grant = async (context) => {
     return await app.run(async function () {
         let activityService = new ActivityService(app);
         let prizes = await activityService.grant();
-        return {prizes};
+        app.response.data = {prizes};
     });
 }
 // @ts-ignore
@@ -86,6 +86,6 @@ exports.getBindItemInfo = async (context) => {
     return await app.run(async function () {
         let activityService = new ActivityService(app);
         let items = await activityService.getBindItemInfo(appConfig.C.appId);
-        return {items};
+        app.response.data = {items};
     });
 }
