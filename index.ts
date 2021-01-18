@@ -66,6 +66,7 @@ exports.queryBenefit = async (context) => {
 // @ts-ignore
 exports.grant = async (context) => {
     const app = new App(context, "grant");
+    app.config.globalActivity = true;
     return await app.run(async function () {
         let activityService = new ActivityService(app);
         let prizes = await activityService.grant();
