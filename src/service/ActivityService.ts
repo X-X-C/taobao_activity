@@ -33,25 +33,17 @@ export default class ActivityService extends BaseActivityService {
     }
 
     async getBindItemInfo(appId) {
-        let ids = await this.topService.taobaoOpentradeSpecialItemsQuery(appId);
+        let ids: any = await this.topService.taobaoOpentradeSpecialItemsQuery(appId);
         let items = [];
         if (ids.data.items.number) {
-            for (const id of ids.data.items.number) {
-                let result = await this.topService.taobaoItemSellerGet(id);
-                let item = result.data.item;
-                items.push(
-                    {
-                        nick: item.nick,
-                        detail_url: item.detail_url,
-                        price: item.price,
-                        item_imgs: item.item_imgs,
-                        num_iid: item.num_iid,
-                        pic_url: item.pic_url,
-                        title: item.title,
-                        type: item.type,
-                        approve_status: item.approve_status
-                    }
-                );
+            ids = ids.data.items.number;
+            while (ids.length > 0) {
+                let result = await this.topService.taobaoItemsSellerListGet(ids.splice(0, 20).join(","))
+                if (result.code !== 0) {
+                    items.push(
+                        ...result.data.items.item
+                    );
+                }
             }
         }
         return items;
