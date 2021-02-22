@@ -13,7 +13,8 @@
         "moment-timezone": "*",
         "gm-activity": "*",
         "qr-image": "*",
-        "gm-spm": "*"
+        "gm-spm": "*",
+        "uuid": "*"
     },
     "author": "",
     "license": "ISC"
