@@ -16,7 +16,7 @@ export default class ActivityService extends BaseActivityService {
             Object.keys(activity.data.data.grantTotal).map(item => {
                 prizes.push(
                     {
-                        count: activity.data.grantTotal[item],
+                        count: activity.data.data.grantTotal[item],
                         _id: item
                     }
                 );
