@@ -1,8 +1,8 @@
 import TopService from "../../base/service/TopService";
 import App from "../../base/App";
-import BaseActivityService from "../../base/service/BaseActivityService";
+import XActivityService from "../../base/service/XActivityService";
 
-export default class ActivityService extends BaseActivityService {
+export default class ActivityService extends XActivityService {
     constructor(app: App) {
         super(app);
     }
@@ -26,19 +26,26 @@ export default class ActivityService extends BaseActivityService {
     }
 
     async bindItemToApp(appId, itemId) {
-        let rs = await this.topService.taobaoOpentradeSpecialItemsBind(appId, itemId)
+        let rs = await this.topService.taobaoOpentradeSpecialItemsBind({
+            appCID: appId,
+            itemId: itemId
+        })
         if (rs.code === 0) {
             throw rs;
         }
     }
 
     async getBindItemInfo(appId) {
-        let ids: any = await this.topService.taobaoOpentradeSpecialItemsQuery(appId);
+        let ids: any = await this.topService.taobaoOpentradeSpecialItemsQuery({
+            appCID: appId
+        });
         let items = [];
         if (ids.data.items.number) {
             ids = ids.data.items.number;
             while (ids.length > 0) {
-                let result = await this.topService.taobaoItemsSellerListGet(ids.splice(0, 20).join(","))
+                let result = await this.topService.taobaoItemsSellerListGet({
+                    numIids: ids.splice(0, 20).join(",")
+                })
                 if (result.code !== 0) {
                     items.push(
                         ...result.data.items.item
