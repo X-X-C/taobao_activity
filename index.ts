@@ -66,10 +66,9 @@ exports.queryBenefit = async (context) => {
 // @ts-ignore
 exports.grant = async (context) => {
     const app = new App(context, "grant");
-    app.config.globalActivity = true;
+    app.runConfig.setGlobalActivity;
     return await app.run(async function () {
-        let activityService = new ActivityService(app);
-        let prizes = await activityService.grant();
+        let prizes = await app.getService(ActivityService).grant();
         app.response.data = {prizes};
     });
 }
@@ -77,16 +76,14 @@ exports.grant = async (context) => {
 exports.bindItemToApp = async (context) => {
     const app = new App(context, "bindItemToApp");
     return await app.run(async function () {
-        let activityService = new ActivityService(app);
-        await activityService.bindItemToApp(appConfig.C.appId, this.itemId);
+        await app.getService(ActivityService).bindItemToApp(appConfig.C.appId, this.itemId);
     });
 }
 // @ts-ignore
 exports.getBindItemInfo = async (context) => {
     const app = new App(context, "getBindItemInfo");
     return await app.run(async function () {
-        let activityService = new ActivityService(app);
-        let items = await activityService.getBindItemInfo(appConfig.C.appId);
+        let items = await app.getService(ActivityService).getBindItemInfo(appConfig.C.appId);
         app.response.data = {items};
     });
 }
