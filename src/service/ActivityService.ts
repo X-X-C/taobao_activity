@@ -26,12 +26,16 @@ export default class ActivityService extends XActivityService {
     }
 
     async bindItemToApp(appId, itemId) {
-        let rs = await this.topService.taobaoOpentradeSpecialItemsBind({
-            appCID: appId,
-            itemId: itemId
-        })
-        if (rs.code === 0) {
-            throw rs;
+        try {
+            await this.topService.taobaoOpentradeSpecialItemsBind({
+                appCID: appId,
+                itemId: itemId
+            })
+        } catch (e) {
+            throw {
+                message: e.sub_msg,
+                ...e,
+            }
         }
     }
 
