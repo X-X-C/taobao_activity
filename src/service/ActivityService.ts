@@ -27,13 +27,17 @@ export default class ActivityService extends XActivityService {
 
     async bindItemToApp(appId, itemId) {
         try {
-            await this.topService.taobaoOpentradeSpecialItemsBind({
+            let r = await this.topService.taobaoOpentradeSpecialItemsBind({
                 appCID: appId,
                 itemId: itemId
             })
+            if (r.code !== 1) {
+                this.response.success = false;
+                this.response.message = r.data?.results?.item_bind_result[0]?.error_message || "绑定失败";
+            }
         } catch (e) {
             throw {
-                message: e.sub_msg,
+                message: e.sub_msg || "绑定失败",
                 ...e,
             }
         }
