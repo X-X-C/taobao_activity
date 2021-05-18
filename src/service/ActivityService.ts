@@ -11,17 +11,18 @@ export default class ActivityService extends XActivityService {
 
     async grant() {
         let prizes = [];
-        let activity = this.globalActivity;
-        if (activity.code !== -1) {
-            Object.keys(activity.data.data.grantTotal).map(item => {
-                prizes.push(
-                    {
-                        count: activity.data.data.grantTotal[item],
-                        _id: item
-                    }
-                );
-            });
-        }
+        let stock = await this.app.db("stockInfo").find({
+            activityId: this.activityId
+        });
+        stock = stock[0]?.stock || {};
+        Object.keys(stock).map(item => {
+            prizes.push(
+                {
+                    count: stock[item],
+                    _id: item
+                }
+            );
+        });
         return prizes;
     }
 
