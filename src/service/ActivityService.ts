@@ -11,7 +11,7 @@ export default class ActivityService extends XActivityService {
 
     async grant() {
         let prizes = [];
-        let stock = await this.app.db("stockInfo").find({
+        let stock = await this.app.db("activityInfo").find({
             activityId: this.activityId
         });
         stock = stock[0]?.stock || {};
