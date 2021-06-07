@@ -1,7 +1,8 @@
 // @ts-ignore
 import * as gmtaobao from "gm-activity"
+import {XApp} from "./base/App";
+import App from "./App";
 import ActivityService from "./src/service/ActivityService";
-import App from "./base/App";
 
 const appConfig = {
     //B端配置
@@ -115,28 +116,19 @@ export async function editAppConfig(context) {
     return await gmtaobao.activity.editAppConfig(context);
 }
 
-export async function grant(context) {
-    const app = new App(context, "grant");
-    app.before.globalActivity();
-    return await app.run(async function () {
-        let prizes = await app.getService(ActivityService).grant();
-        app.response.data = {prizes};
-    });
-}
 
-
-export async function bindItemToApp(context) {
-    const app = new App(context, "bindItemToApp");
-    return await app.run(async function () {
-        await app.getService(ActivityService).bindItemToApp(appConfig.C.appId, this.itemId);
-    });
-}
-
-
-export async function getBindItemInfo(context) {
-    const app = new App(context, "getBindItemInfo");
-    return await app.run(async function () {
-        let items = await app.getService(ActivityService).getBindItemInfo(appConfig.C.appId);
-        app.response.data = {items};
-    });
+const modules = [ActivityService];
+for (let entry of Object.entries(XApp.exports)) {
+    // @ts-ignore
+    exports[entry[0]] = async (context) => {
+        const app = new App(context, entry[0]);
+        app.runNeedParams = entry[1].params || {};
+        if (!entry[1].needGlobalParam) {
+            app.globalNeedParams = {};
+        }
+        entry[1].before.forEach(v => v.call(app.before))
+        return await app.run(async function () {
+            await app.getService(entry[1].constructor)[entry[0]]();
+        });
+    }
 }

@@ -1,20 +1,22 @@
 import TopService from "../../base/service/TopService";
-import App from "../../base/App";
 import XActivityService from "../../base/service/XActivityService";
+import {before, exp} from "../../base/utils/Annotation";
+import App, {Before} from "../../App";
 
 export default class ActivityService extends XActivityService {
     constructor(app: App) {
         super(app);
     }
 
+    app: App;
+
     private topService = this.getService(TopService)
 
+    @before(Before.prototype.globalActivityInfo)
+    @exp()
     async grant() {
         let prizes = [];
-        let stock = await this.app.db("activityInfo").find({
-            activityId: this.activityId
-        });
-        stock = stock[0]?.stock || {};
+        let stock = this.globalActivity.activityInfo;
         Object.keys(stock).map(item => {
             prizes.push(
                 {
@@ -23,14 +25,16 @@ export default class ActivityService extends XActivityService {
                 }
             );
         });
-        return prizes;
+        this.response.data = {prizes};
     }
 
-    async bindItemToApp(appId, itemId) {
+    @before(Before.prototype.appConfig)
+    @exp()
+    async bindItemToApp() {
         try {
             let r = await this.topService.taobaoOpentradeSpecialItemsBind({
-                appCID: appId,
-                itemId: itemId
+                appCID: this.app.globalAppConfig.appConfig.C.appId,
+                itemId: this.data.itemId
             })
             if (r.code !== 1) {
                 this.response.success = false;
@@ -44,9 +48,11 @@ export default class ActivityService extends XActivityService {
         }
     }
 
-    async getBindItemInfo(appId) {
+    @before(Before.prototype.appConfig)
+    @exp()
+    async getBindItemInfo() {
         let ids: any = await this.topService.taobaoOpentradeSpecialItemsQuery({
-            appCID: appId
+            appCID: this.app.globalAppConfig.appConfig.C.appId
         });
         let items = [];
         if (ids.data.items.number) {
@@ -62,6 +68,6 @@ export default class ActivityService extends XActivityService {
                 }
             }
         }
-        return items;
+        this.response.data = {items};
     }
 }
