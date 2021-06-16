@@ -94,6 +94,6 @@ export async function editAppConfig(context) {
     return await gmtaobao.activity.editAppConfig(context);
 }
 
-[ActivityService];
+const modules = [ActivityService];
 // @ts-ignore
-exports = XApp.initExpose(App);
+XApp.initExpose(App, exports);
