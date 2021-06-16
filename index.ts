@@ -2,7 +2,10 @@
 import * as gmtaobao from "gm-activity"
 import {XApp} from "./base/App";
 import App from "./App";
-import ActivityService from "./src/service/ActivityService";
+
+// @ts-ignore
+XApp.initExpose(App, exports);
+
 
 export async function qrimage(context) {
     return gmtaobao.utils.qrimage(context);
@@ -94,6 +97,3 @@ export async function editAppConfig(context) {
     return await gmtaobao.activity.editAppConfig(context);
 }
 
-const modules = [ActivityService];
-// @ts-ignore
-XApp.initExpose(App, exports);
