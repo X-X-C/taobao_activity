@@ -1,7 +1,8 @@
 import TopService from "../../base/service/TopService";
 import XActivityService from "../../base/service/XActivityService";
 import {before, exp} from "../../base/utils/Annotation";
-import App, {Before} from "../../App";
+import App from "../../App";
+import {Before} from "../config/Before";
 
 export default class ActivityService extends XActivityService {
     constructor(app: App) {
