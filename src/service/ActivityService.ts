@@ -36,7 +36,7 @@ export default class ActivityService extends XActivityService {
             let r = await this.topService.taobaoOpentradeSpecialItemsBind({
                 appCID: this.app.globalAppConfig.appConfig.C.appId,
                 itemId: this.data.itemId
-            })
+            }).taobaoOpentradeSpecialItemsBindInvoke();
             if (r.code !== 1) {
                 this.response.success = false;
                 this.response.message = r.data?.results?.item_bind_result[0]?.error_message || "绑定失败";
@@ -54,14 +54,14 @@ export default class ActivityService extends XActivityService {
     async getBindItemInfo() {
         let ids: any = await this.topService.taobaoOpentradeSpecialItemsQuery({
             appCID: this.app.globalAppConfig.appConfig.C.appId
-        });
+        }).taobaoOpentradeSpecialItemsQueryInvoke();
         let items = [];
         if (ids.data.items.number) {
             ids = ids.data.items.number;
             while (ids.length > 0) {
                 let result = await this.topService.taobaoItemsSellerListGet({
                     numIids: ids.splice(0, 20).join(",")
-                })
+                }).taobaoItemsSellerListGetInvoke();
                 if (result.code !== 0) {
                     items.push(
                         ...result.data.items.item
