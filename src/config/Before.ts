@@ -7,7 +7,7 @@ export class Before extends XBefore {
             let appConfig = await app.db("appConfig").find();
             appConfig = appConfig[0];
             if (appConfig) {
-                app.globalAppConfig = appConfig[0] || {};
+                app.globalAppConfig = appConfig || {};
             } else {
                 app.status = 0;
                 app.response.set222("还未配置appConfig!");
