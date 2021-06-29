@@ -17,7 +17,7 @@ export default class ActivityService extends XActivityService {
     @exp()
     async grant() {
         let prizes = [];
-        let stock = this.globalActivity.activityInfo;
+        let stock = this.globalActivity.activityInfo.stock;
         Object.keys(stock).map(item => {
             prizes.push(
                 {
