@@ -5,9 +5,6 @@ import App from "../../App";
 import {Before} from "../config/Before";
 
 export default class ActivityService extends XActivityService<App> {
-    constructor(app: App) {
-        super(app);
-    }
 
     private topService = this.getService(TopService)
 
