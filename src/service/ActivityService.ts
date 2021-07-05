@@ -4,12 +4,10 @@ import {before, exp} from "../../base/utils/Annotation";
 import App from "../../App";
 import {Before} from "../config/Before";
 
-export default class ActivityService extends XActivityService {
+export default class ActivityService extends XActivityService<App> {
     constructor(app: App) {
         super(app);
     }
-
-    app: App;
 
     private topService = this.getService(TopService)
 
